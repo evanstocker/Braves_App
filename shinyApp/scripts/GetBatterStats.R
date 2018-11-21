@@ -1,3 +1,4 @@
+# This function returns Batting Avg and Slg % from the PlayOutcome column
 GetStats = function(Data){
   Single = sum(Data == "Single")
   Double = sum(Data == "Double")
