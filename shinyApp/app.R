@@ -1,5 +1,8 @@
+# Load needed libraries
 library(shiny)
 library(ggplot2)
+
+# Load functions
 source("scripts/GetBatterStats.R")
 source("scripts/QueryData.R")
 source('scripts/Global.R', local = FALSE)
@@ -35,7 +38,7 @@ ui <- fluidPage(
 # Define server logic ----
 server <- function(input, output) {
 
-  
+  # Return Batter
   output$selected_batter = renderText({ 
     SelectedData = QueryData(SpinRateMin = input$SpinRate[1],SpinRateMax = input$SpinRate[2],
                              LaunchAngleMin = input$LaunchAngle[1],LaunchAngleMax = input$LaunchAngle[2],SelectedBatter = input$BatterName)
@@ -43,6 +46,7 @@ server <- function(input, output) {
     paste(SelectedData$BATTER[1]) 
   })
   
+  # Return Batting Avg
   output$selected_batteravg = renderText({
     SelectedData = QueryData(SpinRateMin = input$SpinRate[1],SpinRateMax = input$SpinRate[2],
                              LaunchAngleMin = input$LaunchAngle[1],LaunchAngleMax = input$LaunchAngle[2],SelectedBatter = input$BatterName)
@@ -50,18 +54,21 @@ server <- function(input, output) {
     paste(format(round(GetStats(SelectedData$PLAY_OUTCOME)[1],3),nsmall=3))
   })
   
+  # Return Slugging %
   output$selected_batterslg = renderText({
     SelectedData = QueryData(SpinRateMin = input$SpinRate[1],SpinRateMax = input$SpinRate[2],
                              LaunchAngleMin = input$LaunchAngle[1],LaunchAngleMax = input$LaunchAngle[2],SelectedBatter = input$BatterName)
     paste(format(round(GetStats(SelectedData$PLAY_OUTCOME)[2],3),nsmall=3))
   })
   
+  # Return Sample Size
   output$selected_samplesize = renderText({
     SelectedData = QueryData(SpinRateMin = input$SpinRate[1],SpinRateMax = input$SpinRate[2],
                              LaunchAngleMin = input$LaunchAngle[1],LaunchAngleMax = input$LaunchAngle[2],SelectedBatter = input$BatterName)
     paste(length(SelectedData$PLAY_OUTCOME))
   })
   
+  # Create Bar Graph with ggplot2
   output$selected_plot = renderPlot({
     SelectedData = QueryData(SpinRateMin = input$SpinRate[1],SpinRateMax = input$SpinRate[2],
                              LaunchAngleMin = input$LaunchAngle[1],
